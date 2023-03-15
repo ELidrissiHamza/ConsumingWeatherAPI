@@ -1,16 +1,17 @@
+
+
 const express=require('express')
 const https=require('https');
 const bodyparser=require('body-parser')
 const mysql = require('mysql');
 const { query } = require('express');
-//const mongoose=require('mongoose');
+require('dotenv').config();
+
 var MongoClient = require("mongodb").MongoClient;
 const { assert } = require('console');
 
 const app=express()
-//connect to mongodb
-//'mongodb+srv://user1:user1@weathercluster.jyab8oq.mongodb.net/mydb?retryWrites=true&w=majority'
-const dburl="mongodb://mongo-container:27017/myproject";
+const dburl="mongodb://mongo-container:27017/dbweather";
 const client = new MongoClient(dburl);
 async function connect(c , w ){
   try{
@@ -44,7 +45,7 @@ console.log("the request is received");
  console.log(req.body.cityname) ;
  const query=req.body.cityname;
  cityq=query;
-const apikey='a6bccd7ab6834c99394b16ef34bdc41f'
+const apikey=process.env.API_KEY;
 const url='https://api.openweathermap.org/data/2.5/weather?q='+query+'&appid='+apikey+'&unit=metric';
 https.get(url,(response=>{
 //console.log(response.statusCode);
@@ -69,6 +70,6 @@ connect(query,temp);
 
 
 
-  app.listen(5400,()=>{
-    console.log("our server is running at port 5400");
+  app.listen(8089,()=>{
+    console.log("our server is running at port 8089");
 })
